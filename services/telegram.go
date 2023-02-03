@@ -12,6 +12,7 @@ func SendTelegramMessage(text string, chatId []string, token string) (bool, erro
 	var err error
 	var response *http.Response
 	telegramAPIURL := fmt.Sprintf("https://api.telegram.org/bot%s", token)
+	defer response.Body.Close()
 
 	for _, id := range chatId {
 
@@ -28,8 +29,6 @@ func SendTelegramMessage(text string, chatId []string, token string) (bool, erro
 		if err != nil {
 			return false, err
 		}
-
-		defer response.Body.Close()
 
 		body, err = io.ReadAll(response.Body)
 		if err != nil {
